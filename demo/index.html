@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Quicksand" />
+<link rel='stylesheet' href='http://twbs.github.io/bootstrap/2.3.2/assets/css/bootstrap.css' />
+<link rel='stylesheet' href='pretty-json.css' />
+<style>
+    
+body {
+  padding: 8px 22px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+</style>
+</head>
+
+<body>
+    <h1>JIRA in Real-Time :) <a href="#" id="socket_status" class="btn btn-small">...</a></h1>
+    <p id="container"></p>
+</body>
+
+<script src="http://twbs.github.io/bootstrap/2.3.2/assets/js/jquery.js"></script>
+<script src="socket.io.min.js"></script>
+
+<script src="underscore-min.js" ></script>
+<script src="backbone-min.js" ></script>
+<script src="pretty-json-min.js"></script>
+
+<script>
+
+var socket = io.connect('http://HOST_OR_IP:3000');
+
+socket.on('connect', function() {
+    hookOnConnect();
+});
+
+socket.on('disconnect', function() {
+    hookOnDisconnect();
+});
+
+socket.on('trigger', function (data) {
+    //console.log(data);
+    hookOnTrigger(data);
+});
+
+function hookOnConnect() {
+    $('#socket_status').removeClass('btn-danger');
+    $('#socket_status').addClass('btn-success');
+    $('#socket_status').html('Connected');
+}
+
+function hookOnDisconnect() {
+    $('#socket_status').removeClass('btn-success');
+    $('#socket_status').addClass('btn-danger');
+    $('#socket_status').html('Connexion lost :\\');
+}
+
+function hookOnTrigger(data) {
+
+    // Create and hide.
+    var div = $('<pre></pre>');
+    div.hide();
+
+    // Add.
+    $('#container').prepend(div);
+
+    // Prettify :)
+    var node = new PrettyJSON.view.Node({
+        el: div,
+        data: data
+    });
+
+    // Show it.
+    div.fadeIn(600);
+
+    return true;
+}
+
+</script>
+</html>
