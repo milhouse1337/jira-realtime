@@ -5,6 +5,10 @@ Real-Time monitoring dashboard for JIRA (Webhooks) using Node.js and Socket.io
 
 This project is experimental and provides only a proof of concept of what is possible with Websockets and a simple Node.js app.
 
+## Screenshot
+
+![](https://raw.github.com/milhouse1337/jira-realtime/master/demo/img/jira-realtime-dashboard.png)
+
 ## Requirements
 
 * Node.js
